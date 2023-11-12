@@ -14,6 +14,15 @@ github：[https://github.com/Ikaros-521/http_transfer/releases](https://github.c
 
 ## API
 
+### 添加数据
+![image](https://github.com/Ikaros-521/http_transfer/assets/40910637/b7d5ba45-2f92-4aad-bb5c-10914ee02767)
+
+### 获取数据
+![image](https://github.com/Ikaros-521/http_transfer/assets/40910637/7375a398-fa5a-4520-a491-ba44ffbb40c3)
+
+### 删除数据
+![image](https://github.com/Ikaros-521/http_transfer/assets/40910637/49f33fa8-9253-4154-9fb4-4558e29a32c4)
+
 
 # FAQ
 
