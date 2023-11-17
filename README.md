@@ -33,6 +33,7 @@ github：[https://github.com/Ikaros-521/http_transfer/releases](https://github.c
 
 - 2023-11-17
   - 增加密码传参校验
+  - 补充IP地址输出
 
 - 2023-11-12
   - 初版demo发布

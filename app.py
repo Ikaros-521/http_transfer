@@ -93,7 +93,7 @@ if __name__ == '__main__':
             logging.info(data_json)
 
             if not check_password(data_json):
-                return jsonify({"code": -1, "message": f"请停止你的非法请求！"})
+                return jsonify({"code": -1, "message": f"[{request.remote_addr}] 请停止你的非法请求！"})
 
             if data_json["all"]:
                 global_data_list = []
@@ -141,7 +141,7 @@ if __name__ == '__main__':
             logging.info(data_json)
 
             if not check_password(data_json):
-                return jsonify({"code": -1, "message": f"请停止你的非法请求！"})
+                return jsonify({"code": -1, "message": f"[{request.remote_addr}] 请停止你的非法请求！"})
 
             if 0 == len(global_data_list):
                 return jsonify({"code": -3, "message": f"数据列表为空"})
@@ -189,7 +189,7 @@ if __name__ == '__main__':
                 logging.info(data_json)
 
                 if not check_password(data_json):
-                    return jsonify({"code": -1, "message": f"请停止你的非法请求！"})
+                    return jsonify({"code": -1, "message": f"[{request.remote_addr}] 请停止你的非法请求！"})
 
                 global_data_list.append(data_json)
 
