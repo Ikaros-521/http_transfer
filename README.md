@@ -31,6 +31,9 @@ github：[https://github.com/Ikaros-521/http_transfer/releases](https://github.c
 
 # 更新日志
 
+- 2023-11-17
+  - 增加密码传参校验
+
 - 2023-11-12
   - 初版demo发布
   - 补充运行脚本（请将Miniconda3安装在项目文件夹，并命名为Miniconda3，才能正常使用，要么自行适配）

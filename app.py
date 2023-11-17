@@ -24,6 +24,9 @@ werkzeug_logger.setLevel(logging.WARNING)
 if __name__ == '__main__':
     os.environ['GEVENT_SUPPORT'] = 'True'
 
+    port = 5700
+    password = "中文的密码，怕了吧！"
+
     app = Flask(__name__, static_folder='./')
     CORS(app)  # 允许跨域请求
     socketio = SocketIO(app, cors_allowed_origins="*")
@@ -43,6 +46,17 @@ if __name__ == '__main__':
             os.execv(python_executable, ['python', script_file])
         except Exception as e:
             print(f"Failed to restart the program: {e}")
+
+
+    def check_password(data_json):
+        try:
+            if data_json["password"] == password:
+                return True
+            else:
+                return False
+        except Exception as e:
+            logging.error(f"密码校验失败！{e}")
+            return False
 
 
     @app.route('/index.html')
@@ -77,6 +91,9 @@ if __name__ == '__main__':
         try:
             data_json = request.get_json()
             logging.info(data_json)
+
+            if not check_password(data_json):
+                return jsonify({"code": -1, "message": f"请停止你的非法请求！"})
 
             if data_json["all"]:
                 global_data_list = []
@@ -123,6 +140,9 @@ if __name__ == '__main__':
             data_json = request.get_json()
             logging.info(data_json)
 
+            if not check_password(data_json):
+                return jsonify({"code": -1, "message": f"请停止你的非法请求！"})
+
             if 0 == len(global_data_list):
                 return jsonify({"code": -3, "message": f"数据列表为空"})
             # 确保起始索引不越界
@@ -168,6 +188,9 @@ if __name__ == '__main__':
                 data_json = request.get_json()
                 logging.info(data_json)
 
+                if not check_password(data_json):
+                    return jsonify({"code": -1, "message": f"请停止你的非法请求！"})
+
                 global_data_list.append(data_json)
 
                 logging.info("添加数据成功！")
@@ -180,7 +203,6 @@ if __name__ == '__main__':
             return jsonify({"code": -1, "message": f"添加数据失败！{e}"})
 
 
-    port = 5700
     url = f'http://localhost:{port}/index.html'
     # webbrowser.open(url)
     # logging.info(f"浏览器访问地址：{url}")
