@@ -48,14 +48,14 @@ if __name__ == '__main__':
             print(f"Failed to restart the program: {e}")
 
 
-    def check_password(data_json):
+    def check_password(data_json, ip):
         try:
             if data_json["password"] == password:
                 return True
             else:
                 return False
         except Exception as e:
-            logging.error(f"密码校验失败！{e}")
+            logging.error(f"[{ip}] 密码校验失败！{e}")
             return False
 
 
@@ -92,7 +92,7 @@ if __name__ == '__main__':
             data_json = request.get_json()
             logging.info(data_json)
 
-            if not check_password(data_json):
+            if not check_password(data_json, request.remote_addr):
                 return jsonify({"code": -1, "message": f"[{request.remote_addr}] 请停止你的非法请求！"})
 
             if data_json["all"]:
@@ -140,7 +140,7 @@ if __name__ == '__main__':
             data_json = request.get_json()
             logging.info(data_json)
 
-            if not check_password(data_json):
+            if not check_password(data_json, request.remote_addr):
                 return jsonify({"code": -1, "message": f"[{request.remote_addr}] 请停止你的非法请求！"})
 
             if 0 == len(global_data_list):
@@ -188,7 +188,7 @@ if __name__ == '__main__':
                 data_json = request.get_json()
                 logging.info(data_json)
 
-                if not check_password(data_json):
+                if not check_password(data_json, request.remote_addr):
                     return jsonify({"code": -1, "message": f"[{request.remote_addr}] 请停止你的非法请求！"})
 
                 global_data_list.append(data_json)
