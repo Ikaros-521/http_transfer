@@ -104,13 +104,16 @@ class Chatgpt:
                 if self.current_key_index > max_length:
                     self.current_key_index = 0
                     return "全部Key均已达到速率限制,请等待一分钟后再尝试"
-                openai.api_key = self.data_openai['api_key'][self.current_key_index]
+                # openai.api_key = self.data_openai['api_key'][self.current_key_index]
+                openai.api_key = self.data_openai['api_key']
 
             # 调用 ChatGPT 接口生成回复消息
             resp = openai.ChatCompletion.create(
                 model=self.data_chatgpt['model'],
-                messages=messages
+                messages=messages,
+                timeout=60
             )
+            logging.debug(resp)
             resp = resp['choices'][0]['message']['content']
 
         # 处理 OpenAIError 异常

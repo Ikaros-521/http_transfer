@@ -6,3 +6,5 @@ gradio_client
 Flask[async]
 edge_tts
 aiohttp
+langid
+openai==0.28
