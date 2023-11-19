@@ -44,7 +44,7 @@ if __name__ == '__main__':
     my_tts = MY_TTS(config_file_path)
 
 
-    def self_restart():
+    def self_reboot():
         try:
             # 获取当前 Python 解释器的可执行文件路径
             python_executable = sys.executable
@@ -249,6 +249,33 @@ if __name__ == '__main__':
                 return jsonify({"code": 200, "message": "请求成功", "data": {"file_path": f"out/{common.extract_filename(result)}"}})
             else:
                 return jsonify({"code": -1, "message": f"请求失败，请查看日志，排查具体问题原因"})
+        except Exception as e:
+            logging.error(traceback.format_exc())
+            return jsonify({"code": -1, "message": f"请求失败，请查看日志，排查具体问题原因，{e}"})
+        
+    """
+    重启程序
+
+    data_json = {
+        "password": ""
+    }
+
+    return:
+        {"code": 200, "message": "成功"}
+        {"code": -1, "message": "失败"}
+    """
+    @app.route('/reboot', methods=['POST'])
+    async def reboot():
+        try:
+            data_json = request.get_json()
+            logging.info(data_json)
+
+            if not check_password(data_json, request.remote_addr):
+                return jsonify({"code": -1, "message": f"[{request.remote_addr}] 请停止你的非法请求！"})
+
+            self_reboot()
+
+            return jsonify({"code": 200, "message": f"重启成功"})
         except Exception as e:
             logging.error(traceback.format_exc())
             return jsonify({"code": -1, "message": f"请求失败，请查看日志，排查具体问题原因，{e}"})

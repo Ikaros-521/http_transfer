@@ -35,19 +35,22 @@
         <div>
             <div id="div_chatgpt">
                 <div class="row">
+                    <h3>ChatGPT</h3>
+                </div>
+                <div class="row">
                     <label for="input_openai_api">API地址</label>
                     <input class="input_config_common" id="input_openai_api" type="text" placeholder="API请求地址，支持代理" style="width:200px;">
-                    
-                    <label for="textarea_openai_api_key">API密钥</label>
-                    <input class="input_config_common" id="input_openai_api_key" type="text" placeholder="API KEY，支持代理" style="width:300px;">
-                </div>
-            
-                <div class="row">
                     <label for="select_chatgpt_model">模型</label>
                     <select class="select_config_common" id="select_chatgpt_model">
                         <!-- Options will be dynamically added using JavaScript -->
                     </select>
-            
+
+                </div>
+                <div class="row">
+                    <label for="textarea_openai_api_key">API密钥</label>
+                    <textarea class="textarea_config_common" id="textarea_openai_api_key" placeholder="API密钥，已换行分隔，支持代理" rows="5" cols="40"></textarea>
+                </div>
+                <div class="row">
                     <label for="input_chatgpt_temperature">温度</label>
                     <input class="input_config_common" id="input_chatgpt_temperature" type="text" placeholder="控制生成文本的随机性" style="width:200px;">
             
@@ -71,6 +74,9 @@
             </div>
 
             <div id="div_vits">
+                <div class="row">
+                    <h3>VITS</h3>
+                </div>
                 <div class="row">
                     <label for="select_vits_type">类型</label>
                     <select class="select_config_common" id="select_vits_type">
@@ -119,7 +125,10 @@
                 </div>
             </div>
 
-            <button onclick="save_config()">保存配置</button>
+            <div id="div_config_button">
+                <button onclick="save_config()">保存配置</button>
+                <button onclick="reboot()">重启</button>
+            </div>
         </div>
     </div>
     <div id="sadtalker" class="page">

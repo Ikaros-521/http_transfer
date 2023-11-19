@@ -39,12 +39,21 @@ nav a:hover {
 
 #div_chatgpt {
   padding: 10px;
+  border: 1px solid #000;
+  margin: 10px;
+  border-radius: 3px;
 }
 
 #div_vits {
   padding: 10px;
+  border: 1px solid #000;
+  margin: 10px;
+  border-radius: 3px;
 }
 
+#div_config_button {
+  margin: 10px;
+}
 
 iframe {
   width: 100%;
@@ -149,6 +158,7 @@ input[type="password"] {
   font-size: 16px;
   /* 设置字体大小 */
   min-width: 500px;
+  margin: 5px;
 }
 
 /* 悬停效果 */

@@ -36,6 +36,25 @@ function showtip(type, text, timeout = 3000) {
     tipCounter++;
 }
 
+function commonTextareaHandle(content) {
+    /**
+     * 通用的textarea 多行文本内容处理
+     * 
+     * @param {string} content - 原始多行文本内容
+     * @returns {Array} - 处理好的多行文本内容
+     */
+    
+    // 通用多行分隔符
+    const separators = [" ", "\n"];
+
+    // Using flatMap to split and flatten the array in one step
+    const ret = content.split(new RegExp(separators.join('|'), 'g'))
+                      .map(part => part.trim())
+                      .filter(token => token !== '');
+
+    return ret.slice(1);
+}
+
 function changeVideoSource(file_path) {
     var videoElement = document.getElementById('my_video');
     var sourceElement = document.getElementById('my_video_source');
@@ -97,7 +116,7 @@ function init_config() {
     });
 
     document.getElementById('input_openai_api').value = config["openai"]["api"];
-    document.getElementById('input_openai_api_key').value = config["openai"]["api_key"];
+    document.getElementById('textarea_openai_api_key').value = config["openai"]["api_key"].join("\n");
     document.getElementById('select_chatgpt_model').value = config["openai"]["model"];
 
     document.getElementById('input_chatgpt_temperature').value = config["chatgpt"]["temperature"];
@@ -178,7 +197,7 @@ get_config();
 function save_config() {
     try {
         config["openai"]["api"] = document.getElementById('input_openai_api').value;
-        config["openai"]["api_key"] = document.getElementById('input_openai_api_key').value;
+        config["openai"]["api_key"] = document.getElementById('textarea_openai_api_key').value.split("\n");
         config["openai"]["model"] = document.getElementById('select_chatgpt_model').value;
 
         config["chatgpt"]["temperature"] = parseFloat(document.getElementById('input_chatgpt_temperature').value).toFixed(1);
@@ -218,6 +237,25 @@ function save_config() {
             showtip("error", "保存配置失败，" + error.toString());
         });
 
+}
+
+// 重启
+function reboot() {
+    const url = `http://127.0.0.1:${server_port}/reboot`;
+
+    let data_json = {
+        "password": "中文的密码，怕了吧！"
+    };
+
+    commonHttpRequest(url, "POST", data_json)
+        .then(response => {
+            console.log('reboot Response:', response);
+            showtip("info", "重启成功");
+        })
+        .catch(error => {
+            console.error('reboot Error:', error);
+            // showtip("error", "重启失败，" + error.toString());
+        });
 }
 
 function send_prompt_to_llm() {
