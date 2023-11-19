@@ -4,17 +4,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTTP中转站</title>
+    <title>AI视频生成器</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
-    <div>
-        <h2>API</h2>
-        <section>
+    <nav>
+        <a href="#" onclick="showPage('func')">功能</a>
+        <a href="#" onclick="showPage('config')">配置</a>
+        <a href="#" onclick="showPage('sadtalker')">SadTalker</a>
+    </nav>
+    <div id="func" class="page active">
+        <div>
+            <label for="input_prompt">提示词:</label>
+            <input type="text" id="input_prompt" placeholder="请在此处输入你的提问">
 
-        </section>
+            <button onclick="send_prompt_to_llm()">发送</button>
+            <br>
+            <textarea id="textarea_llm_resp" rows="4" cols="50"></textarea>
+
+            <button onclick="send_content_to_tts()">合成视频</button>
+        </div>
+        <div>
+            <video id="my_video" width="640" height="360" controls>
+                <source id="my_video_source" type="video/mp4">
+            </video>
+        </div>
     </div>
+    <div id="config" class="page">
+        <div>
+            <div id="div_chatgpt">
+                <div class="row">
+                    <label for="input_openai_api">API地址</label>
+                    <input class="input_config_common" id="input_openai_api" type="text" placeholder="API请求地址，支持代理" style="width:200px;">
+                    
+                    <label for="textarea_openai_api_key">API密钥</label>
+                    <input class="input_config_common" id="input_openai_api_key" type="text" placeholder="API KEY，支持代理" style="width:300px;">
+                </div>
+            
+                <div class="row">
+                    <label for="select_chatgpt_model">模型</label>
+                    <select class="select_config_common" id="select_chatgpt_model">
+                        <!-- Options will be dynamically added using JavaScript -->
+                    </select>
+            
+                    <label for="input_chatgpt_temperature">温度</label>
+                    <input class="input_config_common" id="input_chatgpt_temperature" type="text" placeholder="控制生成文本的随机性" style="width:200px;">
+            
+                    <label for="input_chatgpt_max_tokens">最大令牌数</label>
+                    <input class="input_config_common" id="input_chatgpt_max_tokens" type="text" placeholder="限制生成回答的最大长度" style="width:200px;">
+            
+                    <label for="input_chatgpt_top_p">前p个选择</label>
+                    <input class="input_config_common" id="input_chatgpt_top_p" type="text" placeholder="Nucleus采样" style="width:200px;">
+                </div>
+            
+                <div class="row">
+                    <label for="input_chatgpt_presence_penalty">存在惩罚</label>
+                    <input class="input_config_common" id="input_chatgpt_presence_penalty" type="text" placeholder="控制模型生成回答时对给定问题提示的关注程度" style="width:200px;">
+            
+                    <label for="input_chatgpt_frequency_penalty">频率惩罚</label>
+                    <input class="input_config_common" id="input_chatgpt_frequency_penalty" type="text" placeholder="控制生成回答时对已经出现过的令牌的惩罚程度" style="width:200px;">
+            
+                    <label for="input_chatgpt_preset">预设</label>
+                    <input class="input_config_common" id="input_chatgpt_preset" type="text" placeholder="用于指定一组预定义的设置" style="width:500px;">
+                </div>
+            </div>
+
+            <div id="div_vits">
+                <div class="row">
+                    <label for="select_vits_type">类型</label>
+                    <select class="select_config_common" id="select_vits_type">
+                        <option value="vits" selected>VITS</option>
+                        <option value="bert_vits2">BERT VITS2</option>
+                    </select>
+
+                    <label for="input_vits_config_path">配置文件路径</label>
+                    <input class="input_config_common" type="text" id="input_vits_config_path" placeholder="模型配置文件存储路径" value="/path/to/config.json">
+
+                    <label for="input_vits_api_ip_port">API地址</label>
+                    <input class="input_config_common" type="text" id="input_vits_api_ip_port" placeholder="vits-simple-api启动后监听的ip端口地址" value="127.0.0.1:5000">
+                </div>
+                <div class="row">
+                    <label for="input_vits_id">说话人ID</label>
+                    <input class="input_config_common" type="text" id="input_vits_id" placeholder="API启动时会给配置文件重新划分id，一般为拼音顺序排列，从0开始" value="0">
+
+                    <label for="select_vits_lang">语言</label>
+                    <select class="select_config_common" id="select_vits_lang">
+                        <option value="自动" selected>自动</option>
+                        <option value="中文">中文</option>
+                        <option value="英文">英文</option>
+                        <option value="日文">日文</option>
+                    </select>
+
+                    <label for="input_vits_length">语音长度</label>
+                    <input class="input_config_common" type="text" id="input_vits_length" placeholder="调节语音长度，相当于调节语速，该数值越大语速越慢" value="1.0">
+
+                    <label for="input_vits_format">音频格式</label>
+                    <input class="input_config_common" type="text" id="input_vits_format" placeholder="支持wav,ogg,silk,mp3,flac" value="wav">
+
+                </div>
+                <div class="row">
+                    <label for="input_vits_noise">噪声</label>
+                    <input class="input_config_common" type="text" id="input_vits_noise" placeholder="控制感情变化程度" value="0.5">
+
+                    <label for="input_vits_noisew">噪声偏差</label>
+                    <input class="input_config_common" type="text" id="input_vits_noisew" placeholder="控制音素发音长度" value="0.1">
+
+                    <label for="input_vits_max">分段阈值</label>
+                    <input class="input_config_common" type="text" id="input_vits_max" placeholder="按标点符号分段，加起来大于max时为一段文本。max<=0表示不分段。" value="0">
+
+                    
+                    <label for="input_vits_sdp_radio">SDP/DP混合比</label>
+                    <input class="input_config_common" type="text" id="input_vits_sdp_radio" placeholder="SDP/DP混合比：SDP在合成时的占比，理论上此比率越高，合成的语音语调方差越大" value="0.7">
+                </div>
+            </div>
+
+            <button onclick="save_config()">保存配置</button>
+        </div>
+    </div>
+    <div id="sadtalker" class="page">
+        <iframe src="http://127.0.0.1:7860/" width="1800" height="800"></iframe>
+    </div>
+    
     <script src="js/index.js"></script>
 </body>
 

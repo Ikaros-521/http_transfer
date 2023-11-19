@@ -4,3 +4,8 @@ log/*.txt
 *.pyc
 
 Miniconda3/
+
+out/*.wav
+out/*.mp4
+
+test

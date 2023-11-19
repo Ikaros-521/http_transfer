@@ -2,3 +2,7 @@ flask
 flask_socketio
 flask_cors
 requests
+gradio_client
+Flask[async]
+edge_tts
+aiohttp

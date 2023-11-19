@@ -1,0 +1,33 @@
+{
+    "openai": {
+        "api": "https://api.openai.com/v1",
+        "api_key": "",
+        "model": "gpt-3.5-turbo"
+    },
+    "chatgpt": {
+        "model": "gpt-3.5-turbo-0613",
+        "temperature": 0.9,
+        "max_tokens": 4096,
+        "top_p": 1.0,
+        "presence_penalty": 0.0,
+        "frequency_penalty": 0.0,
+        "preset": "请扮演一个AI虚拟主播。不要回答任何敏感问题！不要强调你是主播，只需要回答问题！"
+    },
+    "play_audio": {
+        "enable": true,
+        "out_path": "out"
+    },
+    "vits": {
+        "type": "vits",
+        "config_path": "E:\\vits-simple-api\\Model\\ikaros\\config.json",
+        "api_ip_port": "http://127.0.0.1:23456",
+        "id": "0",
+        "lang": "自动",
+        "length": "1",
+        "noise": "0.33",
+        "noisew": "0.4",
+        "max": "50",
+        "format": "wav",
+        "sdp_radio": "0.2"
+    }
+}
